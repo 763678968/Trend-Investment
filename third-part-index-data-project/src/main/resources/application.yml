@@ -1,0 +1,8 @@
+# 将该服务添加到注册中心里
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+spring:
+  application:
+    name: third-part-index-data-project
