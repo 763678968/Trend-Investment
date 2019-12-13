@@ -7,18 +7,20 @@ import cn.hutool.core.util.StrUtil;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableEurekaClient
+@EnableHystrix
 public class IndexGatherStoreApplication {
     public static void main(String[] args) {
 
-        int port = 0;
         int defaultPort = 8001;
+        int port = defaultPort ;
         int eurekaServerPort = 8761;
-        port = defaultPort ;
+
         if(NetUtil.isUsableLocalPort(eurekaServerPort)) {
             System.err.printf("检查到端口%d 未启用，判断 eureka 服务器没有启动，本服务无法使用，故退出%n", eurekaServerPort );
             System.exit(1);
@@ -40,7 +42,6 @@ public class IndexGatherStoreApplication {
             System.exit(1);
         }
         new SpringApplicationBuilder(IndexGatherStoreApplication.class).properties("server.port=" + port).run(args);
-
     }
 
     @Bean
