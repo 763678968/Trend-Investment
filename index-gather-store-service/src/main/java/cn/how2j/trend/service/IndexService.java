@@ -1,10 +1,13 @@
 package cn.how2j.trend.service;
 
 import cn.how2j.trend.pojo.Index;
+import cn.how2j.trend.util.SpringContextUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.CollectionUtil;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,7 +24,29 @@ public class IndexService {
     RestTemplate restTemplate;
 
     @HystrixCommand(fallbackMethod = "third_part_not_connected")
+    public List<Index> fresh() {
+        indexes = fetch_indexes_from_third_part();
+        IndexService indexService = SpringContextUtil.getBean(IndexService.class);
+        indexService.remove();
+        return indexService.store();
+    }
+
+    @CacheEvict(allEntries = true)
+    public void remove() {
+
+    }
+
     @Cacheable(key = "'all_codes'")
+    public List<Index> store() {
+        System.out.println(this);
+        return indexes;
+    }
+
+    @Cacheable(key = "'all_codes'")
+    public List<Index> get() {
+        return CollUtil.toList();
+    }
+
     public List<Index> fetch_indexes_from_third_part(){
         List<Map> temp= restTemplate.getForObject("http://127.0.0.1:8090/indexes/codes.json",List.class);
         return map2Index(temp);
