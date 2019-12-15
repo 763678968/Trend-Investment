@@ -11,18 +11,19 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+ 
 @RestController
 public class BackTestController {
-    @Autowired
-    BackTestService backTestService;
+	@Autowired BackTestService backTestService;
 
-    @GetMapping("simulate/{code}")
-    @CrossOrigin
-    public Map<String, Object> backTest(@PathVariable("code") String code) throws Exception {
-        List<IndexData> allIndexDatas = backTestService.listIndexData(code);
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("indexDatas", allIndexDatas);
-        return result;
-    }
+	@GetMapping("/simulate/{code}")
+	@CrossOrigin
+	public Map<String,Object> backTest(@PathVariable("code") String code) throws Exception {
+		List<IndexData> allIndexDatas = backTestService.listIndexData(code);
+		Map<String,Object> result = new HashMap<>();
+		result.put("indexDatas", allIndexDatas);
+		return result;
+	}
 }
+
+

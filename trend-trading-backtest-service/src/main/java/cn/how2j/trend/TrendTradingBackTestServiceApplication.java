@@ -22,6 +22,8 @@ import java.util.concurrent.TimeoutException;
 @EnableDiscoveryClient
 @EnableFeignClients
 public class TrendTradingBackTestServiceApplication {
+
+
     public static void main(String[] args) {
         int port = 0;
         int defaultPort = 8051;
@@ -31,6 +33,9 @@ public class TrendTradingBackTestServiceApplication {
             System.err.printf("检查到端口%d 未启用，判断 eureka 服务器没有启动，本服务无法使用，故退出%n", eurekaServerPort );
             System.exit(1);
         }
+
+
+
 
         if(null!=args && 0!=args.length) {
             for (String arg : args) {
@@ -63,7 +68,7 @@ public class TrendTradingBackTestServiceApplication {
                 return p;
             });
             try{
-                port=future.get(5, TimeUnit.SECONDS);
+                port=future.get(5,TimeUnit.SECONDS);
             }
             catch (InterruptedException | ExecutionException | TimeoutException e){
                 port = defaultPort;
@@ -75,5 +80,6 @@ public class TrendTradingBackTestServiceApplication {
             System.exit(1);
         }
         new SpringApplicationBuilder(TrendTradingBackTestServiceApplication.class).properties("server.port=" + port).run(args);
+
     }
 }

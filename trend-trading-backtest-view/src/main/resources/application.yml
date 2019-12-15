@@ -1,6 +1,6 @@
 eureka:
   client:
-    service-url:
+    serviceUrl:
       defaultZone: http://localhost:8761/eureka/
 spring:
   application:
@@ -8,6 +8,5 @@ spring:
   thymeleaf:
     mode: LEGACYHTML5
     encoding: UTF-8
-    servlet:
-      content-type: text/html
+    content-type: text/html
     cache: false

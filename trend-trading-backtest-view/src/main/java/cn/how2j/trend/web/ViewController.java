@@ -1,12 +1,13 @@
-package cn.howj2.trend.web;
+package cn.how2j.trend.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-
+ 
 @Controller
 public class ViewController {
-    @GetMapping("/")
-    public String view() throws Exception {
-        return "view";
-    }
+	@GetMapping("/")
+	public String view() throws Exception {
+		return "view";
+	}
 }
+
