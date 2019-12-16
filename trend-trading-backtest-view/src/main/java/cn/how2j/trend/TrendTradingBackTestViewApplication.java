@@ -25,6 +25,7 @@ public class TrendTradingBackTestViewApplication {
         int defaultPort = 8041;
         int eurekaServerPort = 8761;
         int configServerPort = 8061;
+        int rabbitMQPort = 5672;
 
         if(NetUtil.isUsableLocalPort(eurekaServerPort)) {
         	System.err.printf("检查到端口 %d 未启用，判断 eureka服务器 没有启动，本服务无法使用，故退出%n", eurekaServerPort );
@@ -35,6 +36,12 @@ public class TrendTradingBackTestViewApplication {
         	System.err.printf("检查到端口 %d 未启用，判断 配置服务器 没有启动，本服务无法使用，故退出%n", configServerPort );
         	System.exit(1);
         }
+        // 增加RabbitMQ服务器端口的检查
+        if(NetUtil.isUsableLocalPort(rabbitMQPort)) {
+            System.err.printf("检查到端口 %d 未启用，判断 RabbitMQ服务器 没有启动，本服务无法使用，故退出%n", rabbitMQPort );
+            System.exit(1);
+        }
+
 
         if(null!=args && 0!=args.length) {
         	for (String arg : args) {
