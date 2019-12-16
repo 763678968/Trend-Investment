@@ -38,6 +38,13 @@ public class BackTestService {
 		float share = 0;
 		float value = 0;
 
+		int winCount = 0;
+		float totalWinRate = 0;
+		float avgWinRate = 0;
+		float totalLossRate = 0;
+		int lossCount = 0;
+		float avgLossRate = 0;
+
 		float init = 0;
 		if (!indexDatas.isEmpty())
 			init = indexDatas.get(0).getClosePoint();
@@ -80,6 +87,15 @@ public class BackTestService {
 
 						float rate = cash / initCash;
 						trade.setRate(rate);
+
+						// 计算盈亏率、盈亏次数
+						if (trade.getSellClosePoint() - trade.getBuyClosePoint() > 0) {
+							totalWinRate += (trade.getSellClosePoint() - trade.getBuyClosePoint()) / trade.getBuyClosePoint();
+							winCount++;
+						} else {
+							totalLossRate += (trade.getSellClosePoint() - trade.getBuyClosePoint()) / trade.getBuyClosePoint();
+							lossCount++;
+						}
 					}
 				}
 				// do nothing
@@ -103,9 +119,20 @@ public class BackTestService {
 			System.out.println("profit.value:" + profit.getValue());
 			profits.add(profit);
 		}
+
+		// 计算平均盈利率、平均亏损率
+		avgWinRate = totalWinRate / winCount;
+		avgLossRate = totalLossRate / lossCount;
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("profits", profits);
 		map.put("trades", trades);
+
+		map.put("winCount", winCount);
+		map.put("lossCount", lossCount);
+		map.put("avgWinRate", avgWinRate);
+		map.put("avgLossRate", avgLossRate);
+
 		return map;
 	}
 
