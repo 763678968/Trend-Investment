@@ -24,13 +24,18 @@ public class TrendTradingBackTestViewApplication {
         int port = 0;
         int defaultPort = 8041;
         int eurekaServerPort = 8761;
+        int configServerPort = 8061;
 
         if(NetUtil.isUsableLocalPort(eurekaServerPort)) {
-        	System.err.printf("检查到端口%d 未启用，判断 eureka 服务器没有启动，本服务无法使用，故退出%n", eurekaServerPort );
+        	System.err.printf("检查到端口 %d 未启用，判断 eureka服务器 没有启动，本服务无法使用，故退出%n", eurekaServerPort );
+        	System.exit(1);
+        }
+        // 增加配置服务器的端口检查
+        if(NetUtil.isUsableLocalPort(configServerPort)) {
+        	System.err.printf("检查到端口 %d 未启用，判断 配置服务器 没有启动，本服务无法使用，故退出%n", configServerPort );
         	System.exit(1);
         }
 
-        
         if(null!=args && 0!=args.length) {
         	for (String arg : args) {
 				if(arg.startsWith("port=")) {
