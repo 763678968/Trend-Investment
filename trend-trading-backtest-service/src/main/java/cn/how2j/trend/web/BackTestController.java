@@ -20,13 +20,14 @@ import java.util.*;
 public class BackTestController {
 	@Autowired BackTestService backTestService;
 
-	@GetMapping("/simulate/{code}/{ma}/{startDate}/{endDate}")
+	@GetMapping("/simulate/{code}/{ma}/{buyThreshold}/{sellThreshold}/{serviceCharge}/{startDate}/{endDate}")
 	@CrossOrigin
 	public Map<String,Object> backTest(
 			@PathVariable("code") String code
 			,@PathVariable("ma") int ma
 			,@PathVariable("buyThreshold") float buyThreshold
 			,@PathVariable("sellThreshold") float sellThreshold
+			,@PathVariable("serviceCharge") float serviceCharge
 			,@PathVariable("startDate") String strStartDate
 			,@PathVariable("endDate") String strEndDate) throws Exception {
 		List<IndexData> allIndexDatas = backTestService.listIndexData(code);
@@ -38,7 +39,7 @@ public class BackTestController {
 
 		float sellRate = sellThreshold;
 		float buyRate = buyThreshold;
-		float serviceCharge = 0f;
+
 		Map<String, ?> simulateResult = backTestService.simulate(ma, sellRate, buyRate, serviceCharge, allIndexDatas);
 		List<Profit> profits = (List<Profit>) simulateResult.get("profits");
 		List<Trade> trades = (List<Trade>) simulateResult.get("trades");
