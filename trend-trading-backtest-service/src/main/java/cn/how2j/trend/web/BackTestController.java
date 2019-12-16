@@ -40,12 +40,28 @@ public class BackTestController {
 		List<Profit> profits = (List<Profit>) simulateResult.get("profits");
 		List<Trade> trades = (List<Trade>) simulateResult.get("trades");
 
+		// 获取年份
+		float years = backTestService.getYear(allIndexDatas);
+		// 计算指数投资收益、年化收益率
+		float indexIncomeTotal = (allIndexDatas.get(allIndexDatas.size()-1).getClosePoint() -
+				allIndexDatas.get(0).getClosePoint()) / allIndexDatas.get(0).getClosePoint();
+		float indexIncomeAnnual = (float) (Math.pow(1 + indexIncomeTotal, 1 / years) - 1);
+		// 计算趋势投资收益、年化收益率
+		float trendIncomeTotal = (profits.get(profits.size()-1).getValue() - profits.get(0).getValue()) /
+				profits.get(0).getValue();
+		float trendIncomeAnnual = (float) Math.pow(1 + trendIncomeTotal, 1 / years);
+
 		Map<String,Object> result = new HashMap<>();
 		result.put("indexDatas", allIndexDatas);
 		result.put("indexStartDate", indexStartDate);
 		result.put("indexEndDate", indexEndDate);
 		result.put("profits", profits);
 		result.put("trades", trades);
+		result.put("years", years);
+		result.put("indexIncomeTotal", indexIncomeTotal);
+		result.put("indexIncomeAnnual", indexIncomeAnnual);
+		result.put("trendIncomeTotal", trendIncomeTotal);
+		result.put("trendIncomeAnnual", trendIncomeAnnual);
 
 		return result;
 	}
